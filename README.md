@@ -1,2 +1,2 @@
 # sfg-pet-clinic
-SFG Pet Clinic
+Spring Framework Pet Clinic by Spring Framework Guru
