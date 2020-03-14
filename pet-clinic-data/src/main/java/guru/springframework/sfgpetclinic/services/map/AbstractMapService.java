@@ -1,5 +1,6 @@
 package guru.springframework.sfgpetclinic.services.map;
 
+import guru.springframework.sfgpetclinic.model.BaseEntity;
 import guru.springframework.sfgpetclinic.services.CrudService;
 
 import java.util.HashMap;
@@ -7,9 +8,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractMapService<T, ID> implements CrudService<T, ID> {
+public abstract class AbstractMapService<T extends BaseEntity> implements CrudService<T, Long> {
 
-    private Map<ID, T> map = new HashMap<>();
+    private Map<Long, T> map = new HashMap<>();
 
     @Override
     public Set<T> findAll() {
@@ -17,12 +18,12 @@ public abstract class AbstractMapService<T, ID> implements CrudService<T, ID> {
     }
 
     @Override
-    public T findById(ID id) {
+    public T findById(Long id) {
         return map.get(id);
     }
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(Long id) {
         map.remove(id);
     }
 
@@ -31,7 +32,12 @@ public abstract class AbstractMapService<T, ID> implements CrudService<T, ID> {
         map.entrySet().removeIf(entry -> entry.getValue().equals(object));
     }
 
-    protected T save(ID id, T object) {
+    @Override
+    public T save(T object) {
+        return save(object.getId(), object);
+    }
+
+    private T save(Long id, T object) {
         map.put(id, object);
         return object;
     }
