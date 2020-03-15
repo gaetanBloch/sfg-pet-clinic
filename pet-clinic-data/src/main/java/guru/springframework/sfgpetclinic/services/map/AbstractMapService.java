@@ -30,7 +30,7 @@ abstract class AbstractMapService<T extends BaseEntity> implements CrudService<T
     }
 
     @Override
-    public  T save(T object) {
+    public T save(T object) {
         if (object != null) {
             if (object.getId() == null) {
                 object.setId(getNexId());
