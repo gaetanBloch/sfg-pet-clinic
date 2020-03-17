@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Profile("springdatajpa")
 final class PetTypeSDJpaService extends AbstractSDJpaService<PetType, PetTypeRepository> implements PetTypeService {
-
     PetTypeSDJpaService(PetTypeRepository petTypeRepository) {
         super(petTypeRepository);
     }

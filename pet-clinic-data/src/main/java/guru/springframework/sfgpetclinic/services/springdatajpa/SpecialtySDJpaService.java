@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Profile("springdatajpa")
 final class SpecialtySDJpaService extends AbstractSDJpaService<Specialty, SpecialtyRepository>
         implements SpecialtyService {
-
     SpecialtySDJpaService(SpecialtyRepository specialtyRepository) {
         super(specialtyRepository);
     }
