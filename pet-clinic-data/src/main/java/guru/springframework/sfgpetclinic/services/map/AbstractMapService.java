@@ -31,14 +31,16 @@ abstract class AbstractMapService<T extends BaseEntity> implements CrudService<T
 
     @Override
     public T save(T object) {
-        if (object != null) {
-            if (object.getId() == null) {
-                object.setId(getNexId());
-            }
-            map.put(object.getId(), object);
-        } else {
-            throw new RuntimeException("Object cannot be null");
+
+        if (object == null) {
+            throw new NullPointerException("Object cannot be null");
         }
+
+        if (object.getId() == null) {
+            object.setId(getNexId());
+        }
+        map.put(object.getId(), object);
+
         return object;
     }
 
