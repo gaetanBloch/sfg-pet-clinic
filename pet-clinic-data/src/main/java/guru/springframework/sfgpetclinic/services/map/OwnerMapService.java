@@ -7,7 +7,7 @@ import guru.springframework.sfgpetclinic.services.PetTypeService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OwnerMapService extends AbstractMapService<Owner> implements OwnerService {
+final class OwnerMapService extends AbstractMapService<Owner> implements OwnerService {
 
     private final PetTypeService petTypeService;
     private final PetService petService;
@@ -25,13 +25,16 @@ public class OwnerMapService extends AbstractMapService<Owner> implements OwnerS
         }
 
         owner.getPets().forEach(pet -> {
-            if (pet.getPetType() != null) {
-                if (pet.getPetType().getId() == null) {
-                    pet.setPetType(petTypeService.save(pet.getPetType()));
-                }
-            } else {
-                throw new RuntimeException("Pet Type is required");
+
+            if (pet.getPetType() == null) {
+                throw new NullPointerException("Pet Type of pet '" + pet.getName() + "' cannot be null");
             }
+
+            // Save the pet type id
+            if (pet.getPetType().getId() == null) {
+                pet.setPetType(petTypeService.save(pet.getPetType()));
+            }
+
             // Save the pet id
             if (pet.getId() == null) {
                 pet.setId(petService.save(pet).getId());

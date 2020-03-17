@@ -5,17 +5,17 @@ import guru.springframework.sfgpetclinic.services.CrudService;
 
 import java.util.*;
 
-abstract class AbstractMapService<T extends BaseEntity> implements CrudService<T, Long> {
+abstract class AbstractMapService<Entity extends BaseEntity> implements CrudService<Entity, Long> {
 
-    private Map<Long, T> map = new HashMap<>();
+    private Map<Long, Entity> map = new HashMap<>();
 
     @Override
-    public Set<T> findAll() {
+    public Set<Entity> findAll() {
         return new HashSet<>(map.values());
     }
 
     @Override
-    public T findById(Long id) {
+    public Entity findById(Long id) {
         return map.get(id);
     }
 
@@ -25,23 +25,23 @@ abstract class AbstractMapService<T extends BaseEntity> implements CrudService<T
     }
 
     @Override
-    public void delete(T object) {
-        map.entrySet().removeIf(entry -> entry.getValue().equals(object));
+    public void delete(Entity entity) {
+        map.entrySet().removeIf(entry -> entry.getValue().equals(entity));
     }
 
     @Override
-    public T save(T object) {
+    public Entity save(Entity entity) {
 
-        if (object == null) {
-            throw new NullPointerException("Object cannot be null");
+        if (entity == null) {
+            throw new NullPointerException("Entity cannot be null");
         }
 
-        if (object.getId() == null) {
-            object.setId(getNexId());
+        if (entity.getId() == null) {
+            entity.setId(getNexId());
         }
-        map.put(object.getId(), object);
+        map.put(entity.getId(), entity);
 
-        return object;
+        return entity;
     }
 
     private Long getNexId() {
