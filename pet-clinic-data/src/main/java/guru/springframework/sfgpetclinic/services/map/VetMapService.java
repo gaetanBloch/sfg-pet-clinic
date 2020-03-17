@@ -10,7 +10,7 @@ final class VetMapService extends AbstractMapService<Vet> implements VetService 
 
     private final SpecialtyService specialtyService;
 
-    public VetMapService(SpecialtyService specialtyService) {
+    VetMapService(SpecialtyService specialtyService) {
         this.specialtyService = specialtyService;
     }
 

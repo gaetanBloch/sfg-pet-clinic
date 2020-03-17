@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Profile("springdatajpa")
-final class OwnerSDJpaService extends AbstractSdJpaService<Owner, OwnerRepository> implements OwnerService {
+final class OwnerSDJpaService extends AbstractSDJpaService<Owner, OwnerRepository> implements OwnerService {
 
-    public OwnerSDJpaService(OwnerRepository ownerRepository) {
+    OwnerSDJpaService(OwnerRepository ownerRepository) {
         super(ownerRepository);
     }
 
