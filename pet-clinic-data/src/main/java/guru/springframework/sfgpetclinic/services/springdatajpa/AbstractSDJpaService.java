@@ -2,19 +2,17 @@ package guru.springframework.sfgpetclinic.services.springdatajpa;
 
 import guru.springframework.sfgpetclinic.model.BaseEntity;
 import guru.springframework.sfgpetclinic.services.CrudService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@RequiredArgsConstructor
 abstract class AbstractSDJpaService<Entity extends BaseEntity, Repository extends CrudRepository<Entity, Long>>
         implements CrudService<Entity, Long> {
 
     protected final Repository repository;
-
-    protected AbstractSDJpaService(Repository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public Entity findById(Long id) {
