@@ -70,14 +70,13 @@ class OwnerMapServiceTest {
     @Test
     void saveExistingId() {
         // Given
-        final Long id = 2L;
         Owner savedOwner;
 
         // When
         savedOwner = ownerMapService.save(TestUtils.OWNER);
 
         // Then
-        assertEquals(id, savedOwner.getId());
+        assertEquals(TestUtils.ID, savedOwner.getId());
     }
 
     @Test
