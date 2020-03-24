@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -48,7 +49,7 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name("owners/findOwners"))
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND))
                 .andExpect(model().attributeExists("owner"));
 
         verifyNoInteractions(ownerService);
@@ -64,7 +65,7 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name("owners/ownersList"))
+                .andExpect(view().name(OwnerController.VIEWS_OWNERS_LIST))
                 .andExpect(model().attribute("selections", hasSize(2)));
 
         verify(ownerService).findAllByLastNameLike(anyString());
@@ -94,7 +95,7 @@ class OwnerControllerTest {
         mockMvc.perform(get("/owners"))
 
                 // Then
-                .andExpect(view().name("owners/findOwners"))
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND))
                 .andExpect(model().attributeExists("owner"));
 
         verify(ownerService).findAllByLastNameLike(anyString());
@@ -110,7 +111,7 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name("owners/ownersList"))
+                .andExpect(view().name(OwnerController.VIEWS_OWNERS_LIST))
                 .andExpect(model().attribute("selections", hasSize(2)));
 
         verify(ownerService).findAllByLastNameLike(anyString());
@@ -126,9 +127,70 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name("owners/ownerDetails"))
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_DETAILS))
                 .andExpect(model().attribute("owner", hasProperty("id", is(ID))));
 
         verify(ownerService).findById(ID);
+    }
+
+    @Test
+    void initCreationForm() throws Exception {
+        // When
+        mockMvc.perform(get("/owners/new"))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists("owner"));
+
+        verifyNoInteractions(ownerService);
+    }
+
+    @Test
+    void processCreationForm() throws Exception {
+        // Given
+        when(ownerService.save(any())).thenReturn(OWNER);
+
+        // When
+        mockMvc.perform(post("/owners/new"))
+
+                // Then
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/" + ID))
+                .andExpect(model().attributeExists("owner"));
+
+        verify(ownerService).save(any());
+    }
+
+    @Test
+    void initUpdateOwnerForm() throws Exception {
+        // Given
+        when(ownerService.findById(ID)).thenReturn(OWNER);
+
+        // When
+        mockMvc.perform(get("/owners/" + ID + "/edit"))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists("owner"));
+
+        verify(ownerService).findById(ID);
+    }
+
+    @Test
+    void processUpdateOwnerForm() throws Exception {
+        // Given
+        when(ownerService.save(any())).thenReturn(OWNER);
+
+        // When
+        mockMvc.perform(post("/owners/" + ID + "/edit"))
+
+                // Then
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/" + ID))
+                .andExpect(model().attributeExists("owner"));
+
+        verify(ownerService).save(any());
     }
 }
