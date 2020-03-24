@@ -1,4 +1,4 @@
-package guru.springframework.sfgpetclinic.services;
+package guru.springframework.sfgpetclinic;
 
 import guru.springframework.sfgpetclinic.model.Owner;
 
@@ -9,8 +9,8 @@ import guru.springframework.sfgpetclinic.model.Owner;
 public final class TestUtils {
     public static final Long ID = 1L;
     public static final Long ID2 = 2L;
-    public static final String LAST_NAME = "Smith";
-    public static final Owner OWNER = Owner.builder().id(ID).lastName(LAST_NAME).build();
+    public static final Owner OWNER = Owner.builder().id(ID).build();
+    public static final Owner OWNER2 = Owner.builder().id(ID2).build();
 
     private TestUtils() {
         // To prevent instantiation
