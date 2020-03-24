@@ -72,7 +72,6 @@ class OwnerControllerTest {
 
     @Test
     void findOwnersTest() throws Exception {
-
         // When
         mockMvc.perform(get("/owners/find"))
 
