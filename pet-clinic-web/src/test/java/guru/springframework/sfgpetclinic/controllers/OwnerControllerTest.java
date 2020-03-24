@@ -26,13 +26,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
-
     @Mock
-    OwnerService ownerService;
+    private OwnerService ownerService;
     @InjectMocks
-    OwnerController ownerController;
-    Set<Owner> owners;
-    MockMvc mockMvc;
+    private OwnerController ownerController;
+    private Set<Owner> owners;
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +53,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void listOwners() throws Exception {
+    void listOwnersTest() throws Exception {
         // Given
         when(ownerService.findAll()).thenReturn(owners);
 
@@ -63,7 +62,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void listOwnersByIndex() throws Exception {
+    void listOwnersByIndexTest() throws Exception {
         // Given
         when(ownerService.findAll()).thenReturn(owners);
 
@@ -72,7 +71,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void findOwners() throws Exception {
+    void findOwnersTest() throws Exception {
 
         // When
         mockMvc.perform(get("/owners/find"))
