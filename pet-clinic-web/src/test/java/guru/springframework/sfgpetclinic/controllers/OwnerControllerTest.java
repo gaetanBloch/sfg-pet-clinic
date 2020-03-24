@@ -41,34 +41,6 @@ class OwnerControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
     }
 
-    private void assertListOwners(String url) throws Exception {
-        // When
-        mockMvc.perform(get(url))
-
-                //Then
-                .andExpect(status().isOk())
-                .andExpect(view().name("owners/index"))
-                .andExpect(model().attribute("owners", hasSize(2)));
-    }
-
-    @Test
-    void listOwnersTest() throws Exception {
-        // Given
-        when(ownerService.findAll()).thenReturn(owners);
-
-        // When Then
-        assertListOwners("/owners");
-    }
-
-    @Test
-    void listOwnersByIndexTest() throws Exception {
-        // Given
-        when(ownerService.findAll()).thenReturn(owners);
-
-        // When Then
-        assertListOwners("/owners/index");
-    }
-
     @Test
     void findOwnersTest() throws Exception {
         // When
@@ -76,9 +48,56 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name("notimplemented"));
+                .andExpect(view().name("owners/findOwners"))
+                .andExpect(model().attributeExists("owner"));
 
         verifyNoInteractions(ownerService);
+    }
+
+    @Test
+    void processFindFormReturnMany() throws Exception {
+        // Given
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(owners);
+
+        // When
+        mockMvc.perform(get("/owners"))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/ownersList"))
+                .andExpect(model().attribute("selections", hasSize(2)));
+
+        verify(ownerService).findAllByLastNameLike(anyString());
+    }
+
+    @Test
+    void processFindFormReturnOne() throws Exception {
+        // Given
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(ImmutableSet.of(OWNER));
+
+        // When
+        mockMvc.perform(get("/owners"))
+
+                // Then
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/" + ID));
+
+        verify(ownerService).findAllByLastNameLike(anyString());
+    }
+
+    @Test
+    void processFindFormReturnNone() throws Exception {
+        // Given
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(ImmutableSet.of());
+
+        // When
+        mockMvc.perform(get("/owners"))
+
+                // Then
+                .andExpect(view().name("owners/findOwners"))
+                .andExpect(model().attributeExists("owner"));
+
+        verify(ownerService).findAllByLastNameLike(anyString());
     }
 
     @Test

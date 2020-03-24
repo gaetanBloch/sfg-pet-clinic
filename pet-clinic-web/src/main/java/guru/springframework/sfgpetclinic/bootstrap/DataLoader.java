@@ -72,7 +72,7 @@ final class DataLoader implements CommandLineRunner {
                 .build();
         Pet fionasPet = Pet.builder()
                 .petType(savedCatPetType)
-                .owner(owner1)
+                .owner(owner2)
                 .birthDate(LocalDate.now())
                 .name("Soleil")
                 .build();
