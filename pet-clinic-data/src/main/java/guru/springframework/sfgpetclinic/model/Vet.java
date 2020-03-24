@@ -1,9 +1,6 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -22,7 +19,7 @@ public class Vet extends Person {
     private Set<Specialty> specialties = new HashSet<>();
 
     @Builder
-    public Vet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
+    public Vet(Long id, String firstName, String lastName, @Singular Set<Specialty> specialties) {
         super(id, firstName, lastName);
         if (specialties != null) {
             this.specialties = specialties;

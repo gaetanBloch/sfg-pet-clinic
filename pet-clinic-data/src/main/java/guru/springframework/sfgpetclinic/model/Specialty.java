@@ -1,9 +1,6 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +21,7 @@ public class Specialty extends BaseEntity {
     private Set<Vet> vets = new HashSet<>();
 
     @Builder
-    public Specialty(Long id, String description, Set<Vet> vets) {
+    public Specialty(Long id, String description, @Singular Set<Vet> vets) {
         super(id);
         this.description = description;
         if (vets != null) {
