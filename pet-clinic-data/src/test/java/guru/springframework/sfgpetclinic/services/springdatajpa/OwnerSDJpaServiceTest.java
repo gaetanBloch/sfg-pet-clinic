@@ -3,7 +3,6 @@ package guru.springframework.sfgpetclinic.services.springdatajpa;
 import com.google.common.collect.ImmutableSet;
 import guru.springframework.sfgpetclinic.model.Owner;
 import guru.springframework.sfgpetclinic.repositories.OwnerRepository;
-import guru.springframework.sfgpetclinic.services.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.Set;
 
+import static guru.springframework.sfgpetclinic.services.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -23,42 +23,42 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class OwnerSDJpaServiceTest {
     @Mock
-    OwnerRepository ownerRepository;
+    private OwnerRepository ownerRepository;
     @InjectMocks
-    OwnerSDJpaService ownerService;
+    private OwnerSDJpaService ownerService;
 
     @Test
-    void findById() {
+    void findByIdTest() {
         // Given
-        when(ownerRepository.findById(TestUtils.ID)).thenReturn(Optional.of(TestUtils.OWNER));
+        when(ownerRepository.findById(ID)).thenReturn(Optional.of(OWNER));
         Owner owner;
 
         // When
-        owner = ownerService.findById(TestUtils.ID);
+        owner = ownerService.findById(ID);
 
         //Then
         assertNotNull(owner);
-        assertEquals(TestUtils.ID, owner.getId());
-        verify(ownerRepository, times(1)).findById(TestUtils.ID);
+        assertEquals(ID, owner.getId());
+        verify(ownerRepository, times(1)).findById(ID);
     }
 
     @Test
-    void findByIdNotFound() {
+    void findByIdNotFoundTest() {
         // Given
-        when(ownerRepository.findById(TestUtils.ID)).thenReturn(Optional.empty());
+        when(ownerRepository.findById(ID)).thenReturn(Optional.empty());
         Owner owner;
 
         // When
-        owner = ownerService.findById(TestUtils.ID);
+        owner = ownerService.findById(ID);
 
         //Then
         assertNull(owner);
     }
 
     @Test
-    void findAll() {
+    void findAllTest() {
         // Given
-        when(ownerRepository.findAll()).thenReturn(ImmutableSet.of(Owner.builder().build(), TestUtils.OWNER));
+        when(ownerRepository.findAll()).thenReturn(ImmutableSet.of(Owner.builder().build(), OWNER));
         Set<Owner> owners;
 
         // When
@@ -71,54 +71,54 @@ class OwnerSDJpaServiceTest {
     }
 
     @Test
-    void save() {
+    void saveTest() {
         // Given
-        when(ownerRepository.save(TestUtils.OWNER)).thenReturn(TestUtils.OWNER);
+        when(ownerRepository.save(OWNER)).thenReturn(OWNER);
         Owner owner;
 
         // When
-        owner = ownerService.save(TestUtils.OWNER);
+        owner = ownerService.save(OWNER);
 
         //Then
         assertNotNull(owner);
-        assertEquals(TestUtils.ID, owner.getId());
-        verify(ownerRepository, times(1)).save(TestUtils.OWNER);
+        assertEquals(ID, owner.getId());
+        verify(ownerRepository, times(1)).save(OWNER);
     }
 
     @Test
-    void deleteById() {
+    void deleteByIdTest() {
         // Given
 
         // When
-        ownerService.deleteById(TestUtils.ID);
+        ownerService.deleteById(ID);
 
         //Then
-        verify(ownerRepository, times(1)).deleteById(TestUtils.ID);
+        verify(ownerRepository, times(1)).deleteById(ID);
     }
 
     @Test
-    void delete() {
+    void deleteTest() {
         // Given
 
         // When
-        ownerService.delete(TestUtils.OWNER);
+        ownerService.delete(OWNER);
 
         //Then
-        verify(ownerRepository, times(1)).delete(TestUtils.OWNER);
+        verify(ownerRepository, times(1)).delete(OWNER);
     }
 
     @Test
-    void findByLastName() {
+    void findByLastNameTest() {
         // Given
         Owner owner;
-        when(ownerRepository.findByLastName(TestUtils.LAST_NAME)).thenReturn(TestUtils.OWNER);
+        when(ownerRepository.findByLastName(LAST_NAME)).thenReturn(OWNER);
 
         // When
-        owner = ownerService.findByLastName(TestUtils.LAST_NAME);
+        owner = ownerService.findByLastName(LAST_NAME);
 
         //Then
         assertNotNull(owner);
-        assertEquals(TestUtils.LAST_NAME, owner.getLastName());
-        verify(ownerRepository, times(1)).findByLastName(TestUtils.LAST_NAME);
+        assertEquals(LAST_NAME, owner.getLastName());
+        verify(ownerRepository, times(1)).findByLastName(LAST_NAME);
     }
 }
