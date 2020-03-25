@@ -22,6 +22,9 @@ final class OwnerController {
     static final String VIEW_OWNER_DETAILS = "owners/ownerDetails";
     static final String VIEW_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     static final String URL_OWNERS = "/owners";
+    static final String URL_FIND = "/find";
+    static final String URL_NEW = "/new";
+    static final String URL_EDIT = "/edit";
     static final String ATTRIBUTE_OWNER = "owner";
     static final String ATTRIBUTE_SELECTIONS = "selections";
 
@@ -32,7 +35,7 @@ final class OwnerController {
         dataBinder.setDisallowedFields("id");
     }
 
-    @GetMapping("/find")
+    @GetMapping(URL_FIND)
     public String findOwners(Model model) {
         model.addAttribute(ATTRIBUTE_OWNER, Owner.builder().build());
         return VIEW_OWNER_FIND_FORM;
@@ -70,13 +73,13 @@ final class OwnerController {
         return mav;
     }
 
-    @GetMapping("/new")
+    @GetMapping(URL_NEW)
     public String initCreationForm(Model model) {
         model.addAttribute(ATTRIBUTE_OWNER, Owner.builder().build());
         return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
     }
 
-    @PostMapping("/new")
+    @PostMapping(URL_NEW)
     public String processCreationForm(@Valid Owner owner, BindingResult result) {
         if (result.hasErrors()) {
             return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
@@ -86,13 +89,13 @@ final class OwnerController {
         }
     }
 
-    @GetMapping("/{ownerId}/edit")
+    @GetMapping("/{ownerId}" + URL_EDIT)
     public String initUpdateOwnerForm(@PathVariable Long ownerId, Model model) {
         model.addAttribute(ownerService.findById(ownerId));
         return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
     }
 
-    @PostMapping("/{ownerId}/edit")
+    @PostMapping("/{ownerId}" + URL_EDIT)
     public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable Long ownerId) {
         if (result.hasErrors()) {
             return VIEW_OWNER_CREATE_OR_UPDATE_FORM;

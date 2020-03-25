@@ -30,10 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
-    private static final String URL_OWNERS_FIND = "/owners/find";
-    private static final String URL_OWNERS_NEW = "/owners/new";
-    private static final String URL_OWNERS_EDIT = "/owners/" + ID + "/edit";
-    private static final String URL_REDIRECT_OWNER = "redirect:/owners/" + ID;
+    private static final String URL_OWNERS_FIND = URL_OWNERS + URL_FIND;
+    private static final String URL_OWNERS_NEW = URL_OWNERS + URL_NEW;
+    private static final String URL_OWNERS_EDIT = URL_OWNERS + "/" + ID + URL_EDIT;
+    private static final String URL_REDIRECT_OWNER = "redirect:" + URL_OWNERS + "/" + ID;
 
     @Mock
     private OwnerService ownerService;
@@ -113,7 +113,7 @@ class OwnerControllerTest {
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(owners);
 
         // When
-        mockMvc.perform(get(URL_OWNERS).param("lastName",""))
+        mockMvc.perform(get(URL_OWNERS).param("lastName", ""))
 
                 // Then
                 .andExpect(status().isOk())
@@ -129,7 +129,7 @@ class OwnerControllerTest {
         when(ownerService.findById(ID)).thenReturn(OWNER);
 
         // When
-        mockMvc.perform(get("/owners/" + ID))
+        mockMvc.perform(get(URL_OWNERS + "/" + ID))
 
                 // Then
                 .andExpect(status().isOk())
