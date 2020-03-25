@@ -21,6 +21,7 @@ final class OwnerController {
     static final String VIEWS_OWNERS_LIST = "owners/ownersList";
     static final String VIEWS_OWNER_DETAILS = "owners/ownerDetails";
     static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+
     private final OwnerService ownerService;
 
     @InitBinder
