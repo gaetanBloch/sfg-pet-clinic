@@ -13,6 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Set;
 
+import static guru.springframework.sfgpetclinic.controllers.ControllerUtils.URL_EDIT;
+import static guru.springframework.sfgpetclinic.controllers.ControllerUtils.URL_NEW;
+
 @RequiredArgsConstructor
 @RequestMapping(OwnerController.URL_OWNERS)
 @Controller
@@ -23,8 +26,6 @@ final class OwnerController {
     static final String VIEW_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     static final String URL_OWNERS = "/owners";
     static final String URL_FIND = "/find";
-    static final String URL_NEW = "/new";
-    static final String URL_EDIT = "/edit";
     static final String ATTRIBUTE_OWNER = "owner";
     static final String ATTRIBUTE_SELECTIONS = "selections";
 

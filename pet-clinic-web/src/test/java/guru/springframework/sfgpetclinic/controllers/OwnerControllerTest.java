@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Set;
 
 import static guru.springframework.sfgpetclinic.TestUtils.*;
+import static guru.springframework.sfgpetclinic.controllers.ControllerUtils.URL_EDIT;
+import static guru.springframework.sfgpetclinic.controllers.ControllerUtils.URL_NEW;
 import static guru.springframework.sfgpetclinic.controllers.OwnerController.*;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;

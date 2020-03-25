@@ -18,9 +18,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Set;
 
 import static guru.springframework.sfgpetclinic.TestUtils.*;
+import static guru.springframework.sfgpetclinic.controllers.ControllerUtils.URL_EDIT;
 import static guru.springframework.sfgpetclinic.controllers.OwnerController.ATTRIBUTE_OWNER;
 import static guru.springframework.sfgpetclinic.controllers.OwnerController.URL_OWNERS;
-import static guru.springframework.sfgpetclinic.controllers.PetController.VIEW_PETS_CREATE_OR_UPDATE_FORM;
+import static guru.springframework.sfgpetclinic.controllers.PetController.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,10 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(MockitoExtension.class)
 class PetControllerTest {
-    private static final String URL_PETS_NEW = URL_OWNERS + "/" + ID + "/pets/new";
-    private static final String URL_PETS_EDIT = URL_OWNERS + "/" + ID + "/pets/" + ID2 + "/edit";
-    private static final String URL_REDIRECT_OWNER = "redirect:" + URL_OWNERS + "/" + ID;
-
+    private static final String URL_OWNERS_PETS_NEW = URL_OWNERS + "/" + ID + URL_PETS_NEW;
+    private static final String URL_OWNERS_PETS_EDIT = URL_OWNERS + "/" + ID + URL_PETS + "/" + ID2 + URL_EDIT;
+    private static final String URL_REDIRECT_OWNER_ID = URL_REDIRECT_OWNER + ID;
+    MockMvc mockMvc;
+    Set<PetType> petTypes;
     @Mock
     private PetService petService;
     @Mock
@@ -46,8 +48,6 @@ class PetControllerTest {
     private PetTypeService petTypeService;
     @InjectMocks
     private PetController petController;
-    MockMvc mockMvc;
-    Set<PetType> petTypes;
 
     @BeforeEach
     void setUp() {
@@ -69,51 +69,51 @@ class PetControllerTest {
     }
 
     @Test
-    void initCreationForm() throws Exception {
+    void initCreationFormTest() throws Exception {
         // Given
         initMocksReturn();
 
         // When
-        mockMvc.perform(get(URL_PETS_NEW))
+        mockMvc.perform(get(URL_OWNERS_PETS_NEW))
 
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(ATTRIBUTE_OWNER))
-                .andExpect(model().attributeExists("pet"))
+                .andExpect(model().attributeExists(ATTRIBUTE_PET))
                 .andExpect(view().name(VIEW_PETS_CREATE_OR_UPDATE_FORM));
 
         verifyMocks();
     }
 
     @Test
-    void processCreationForm() throws Exception {
+    void processCreationFormTest() throws Exception {
         // Given
         initMocksReturn();
 
         // When
-        mockMvc.perform(post(URL_PETS_NEW))
+        mockMvc.perform(post(URL_OWNERS_PETS_NEW))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(URL_REDIRECT_OWNER));
+                .andExpect(view().name(URL_REDIRECT_OWNER_ID));
 
         verifyMocks();
         verify(petService).save(any());
     }
 
     @Test
-    void initUpdateForm() throws Exception {
+    void initUpdateFormTest() throws Exception {
         // Given
         initMocksReturn();
         when(petService.findById(ID2)).thenReturn(Pet.builder().id(ID2).build());
 
         // When
-        mockMvc.perform(get(URL_PETS_EDIT))
+        mockMvc.perform(get(URL_OWNERS_PETS_EDIT))
 
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(ATTRIBUTE_OWNER))
-                .andExpect(model().attributeExists("pet"))
+                .andExpect(model().attributeExists(ATTRIBUTE_PET))
                 .andExpect(view().name(VIEW_PETS_CREATE_OR_UPDATE_FORM));
 
         verifyMocks();
@@ -121,16 +121,16 @@ class PetControllerTest {
     }
 
     @Test
-    void processUpdateForm() throws Exception {
+    void processUpdateFormTest() throws Exception {
         // Given
         initMocksReturn();
 
         // When
-        mockMvc.perform(post(URL_PETS_EDIT))
+        mockMvc.perform(post(URL_OWNERS_PETS_EDIT))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(URL_REDIRECT_OWNER));
+                .andExpect(view().name(URL_REDIRECT_OWNER_ID));
 
         verifyMocks();
         verify(petService).save(any());
