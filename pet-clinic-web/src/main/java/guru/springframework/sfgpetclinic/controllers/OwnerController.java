@@ -14,14 +14,16 @@ import javax.validation.Valid;
 import java.util.Set;
 
 @RequiredArgsConstructor
-@RequestMapping("/owners")
+@RequestMapping(OwnerController.URL_OWNERS)
 @Controller
 final class OwnerController {
-    static final String VIEWS_OWNER_FIND_FORM = "owners/findOwners";
-    static final String VIEWS_OWNERS_LIST = "owners/ownersList";
-    static final String VIEWS_OWNER_DETAILS = "owners/ownerDetails";
-    static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+    static final String VIEW_OWNER_FIND_FORM = "owners/findOwners";
+    static final String VIEW_OWNERS_LIST = "owners/ownersList";
+    static final String VIEW_OWNER_DETAILS = "owners/ownerDetails";
+    static final String VIEW_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+    static final String URL_OWNERS = "/owners";
     static final String ATTRIBUTE_OWNER = "owner";
+    static final String ATTRIBUTE_SELECTIONS = "selections";
 
     private final OwnerService ownerService;
 
@@ -33,7 +35,7 @@ final class OwnerController {
     @GetMapping("/find")
     public String findOwners(Model model) {
         model.addAttribute(ATTRIBUTE_OWNER, Owner.builder().build());
-        return VIEWS_OWNER_FIND_FORM;
+        return VIEW_OWNER_FIND_FORM;
     }
 
     @GetMapping
@@ -44,26 +46,26 @@ final class OwnerController {
         }
 
         // find owners by last name
-        Set<Owner> results = ownerService.findAllByLastNameLike("%"+ owner.getLastName() + "%");
+        Set<Owner> results = ownerService.findAllByLastNameLike("%" + owner.getLastName() + "%");
 
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
-            return VIEWS_OWNER_FIND_FORM;
+            return VIEW_OWNER_FIND_FORM;
         } else if (results.size() == 1) {
             // 1 owner found
             owner = results.iterator().next();
-            return "redirect:/owners/" + owner.getId();
+            return "redirect:" + URL_OWNERS + "/" + owner.getId();
         } else {
             // multiple owners found
-            model.addAttribute("selections", results);
-            return VIEWS_OWNERS_LIST;
+            model.addAttribute(ATTRIBUTE_SELECTIONS, results);
+            return VIEW_OWNERS_LIST;
         }
     }
 
     @GetMapping("/{ownerId}")
     public ModelAndView showOwner(@PathVariable Long ownerId) {
-        ModelAndView mav = new ModelAndView(VIEWS_OWNER_DETAILS);
+        ModelAndView mav = new ModelAndView(VIEW_OWNER_DETAILS);
         mav.addObject(ownerService.findById(ownerId));
         return mav;
     }
@@ -71,33 +73,33 @@ final class OwnerController {
     @GetMapping("/new")
     public String initCreationForm(Model model) {
         model.addAttribute(ATTRIBUTE_OWNER, Owner.builder().build());
-        return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+        return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/new")
     public String processCreationForm(@Valid Owner owner, BindingResult result) {
         if (result.hasErrors()) {
-            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+            return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
             Owner savedOwner = ownerService.save(owner);
-            return "redirect:/owners/" + savedOwner.getId();
+            return "redirect:" + URL_OWNERS + "/" + savedOwner.getId();
         }
     }
 
     @GetMapping("/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable Long ownerId, Model model) {
         model.addAttribute(ownerService.findById(ownerId));
-        return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+        return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/{ownerId}/edit")
     public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable Long ownerId) {
         if (result.hasErrors()) {
-            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+            return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
             owner.setId(ownerId);
             Owner savedOwner = ownerService.save(owner);
-            return "redirect:/owners/" + savedOwner.getId();
+            return "redirect:" + URL_OWNERS + "/" + savedOwner.getId();
         }
     }
 }

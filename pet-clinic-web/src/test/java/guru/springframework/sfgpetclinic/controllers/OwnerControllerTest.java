@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Set;
 
 import static guru.springframework.sfgpetclinic.TestUtils.*;
+import static guru.springframework.sfgpetclinic.controllers.OwnerController.*;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -29,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
-    private static final String URL_OWNERS = "/owners";
     private static final String URL_OWNERS_FIND = "/owners/find";
     private static final String URL_OWNERS_NEW = "/owners/new";
     private static final String URL_OWNERS_EDIT = "/owners/" + ID + "/edit";
@@ -55,8 +55,8 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND_FORM))
-                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
+                .andExpect(view().name(VIEW_OWNER_FIND_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
 
         verifyNoInteractions(ownerService);
     }
@@ -71,8 +71,8 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name(OwnerController.VIEWS_OWNERS_LIST))
-                .andExpect(model().attribute("selections", hasSize(2)));
+                .andExpect(view().name(VIEW_OWNERS_LIST))
+                .andExpect(model().attribute(ATTRIBUTE_SELECTIONS, hasSize(2)));
 
         verify(ownerService).findAllByLastNameLike(anyString());
     }
@@ -101,8 +101,8 @@ class OwnerControllerTest {
         mockMvc.perform(get(URL_OWNERS))
 
                 // Then
-                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND_FORM))
-                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
+                .andExpect(view().name(VIEW_OWNER_FIND_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
 
         verify(ownerService).findAllByLastNameLike(anyString());
     }
@@ -117,8 +117,8 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name(OwnerController.VIEWS_OWNERS_LIST))
-                .andExpect(model().attribute("selections", hasSize(2)));
+                .andExpect(view().name(VIEW_OWNERS_LIST))
+                .andExpect(model().attribute(ATTRIBUTE_SELECTIONS, hasSize(2)));
 
         verify(ownerService).findAllByLastNameLike(anyString());
     }
@@ -133,8 +133,8 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name(OwnerController.VIEWS_OWNER_DETAILS))
-                .andExpect(model().attribute(OwnerController.ATTRIBUTE_OWNER, hasProperty("id", is(ID))));
+                .andExpect(view().name(VIEW_OWNER_DETAILS))
+                .andExpect(model().attribute(ATTRIBUTE_OWNER, hasProperty("id", is(ID))));
 
         verify(ownerService).findById(ID);
     }
@@ -146,8 +146,8 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM))
-                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
+                .andExpect(view().name(VIEW_OWNER_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
 
         verifyNoInteractions(ownerService);
     }
@@ -163,7 +163,7 @@ class OwnerControllerTest {
                 // Then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(URL_REDIRECT_OWNER))
-                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
 
         verify(ownerService).save(any());
     }
@@ -178,8 +178,8 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM))
-                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
+                .andExpect(view().name(VIEW_OWNER_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
 
         verify(ownerService).findById(ID);
     }
@@ -195,7 +195,7 @@ class OwnerControllerTest {
                 // Then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(URL_REDIRECT_OWNER))
-                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
 
         verify(ownerService).save(any());
     }
