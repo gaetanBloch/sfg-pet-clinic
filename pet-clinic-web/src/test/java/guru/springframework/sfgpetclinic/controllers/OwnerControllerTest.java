@@ -29,6 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
+    private static final String URL_OWNERS = "/owners";
+    private static final String URL_OWNERS_FIND = "/owners/find";
+    private static final String URL_OWNERS_NEW = "/owners/new";
+    private static final String URL_OWNERS_EDIT = "/owners/" + ID + "/edit";
+    private static final String URL_REDIRECT_OWNER = "redirect:/owners/" + ID;
+
     @Mock
     private OwnerService ownerService;
     @InjectMocks
@@ -45,12 +51,12 @@ class OwnerControllerTest {
     @Test
     void findOwnersTest() throws Exception {
         // When
-        mockMvc.perform(get("/owners/find"))
+        mockMvc.perform(get(URL_OWNERS_FIND))
 
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND_FORM))
-                .andExpect(model().attributeExists("owner"));
+                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
 
         verifyNoInteractions(ownerService);
     }
@@ -61,7 +67,7 @@ class OwnerControllerTest {
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(owners);
 
         // When
-        mockMvc.perform(get("/owners"))
+        mockMvc.perform(get(URL_OWNERS))
 
                 // Then
                 .andExpect(status().isOk())
@@ -77,11 +83,11 @@ class OwnerControllerTest {
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(ImmutableSet.of(OWNER));
 
         // When
-        mockMvc.perform(get("/owners"))
+        mockMvc.perform(get(URL_OWNERS))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/owners/" + ID));
+                .andExpect(view().name(URL_REDIRECT_OWNER));
 
         verify(ownerService).findAllByLastNameLike(anyString());
     }
@@ -92,11 +98,11 @@ class OwnerControllerTest {
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(ImmutableSet.of());
 
         // When
-        mockMvc.perform(get("/owners"))
+        mockMvc.perform(get(URL_OWNERS))
 
                 // Then
                 .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND_FORM))
-                .andExpect(model().attributeExists("owner"));
+                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
 
         verify(ownerService).findAllByLastNameLike(anyString());
     }
@@ -107,7 +113,7 @@ class OwnerControllerTest {
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(owners);
 
         // When
-        mockMvc.perform(get("/owners").param("lastName",""))
+        mockMvc.perform(get(URL_OWNERS).param("lastName",""))
 
                 // Then
                 .andExpect(status().isOk())
@@ -128,7 +134,7 @@ class OwnerControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(view().name(OwnerController.VIEWS_OWNER_DETAILS))
-                .andExpect(model().attribute("owner", hasProperty("id", is(ID))));
+                .andExpect(model().attribute(OwnerController.ATTRIBUTE_OWNER, hasProperty("id", is(ID))));
 
         verify(ownerService).findById(ID);
     }
@@ -136,12 +142,12 @@ class OwnerControllerTest {
     @Test
     void initCreationForm() throws Exception {
         // When
-        mockMvc.perform(get("/owners/new"))
+        mockMvc.perform(get(URL_OWNERS_NEW))
 
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM))
-                .andExpect(model().attributeExists("owner"));
+                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
 
         verifyNoInteractions(ownerService);
     }
@@ -152,12 +158,12 @@ class OwnerControllerTest {
         when(ownerService.save(any())).thenReturn(OWNER);
 
         // When
-        mockMvc.perform(post("/owners/new"))
+        mockMvc.perform(post(URL_OWNERS_NEW))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/owners/" + ID))
-                .andExpect(model().attributeExists("owner"));
+                .andExpect(view().name(URL_REDIRECT_OWNER))
+                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
 
         verify(ownerService).save(any());
     }
@@ -168,12 +174,12 @@ class OwnerControllerTest {
         when(ownerService.findById(ID)).thenReturn(OWNER);
 
         // When
-        mockMvc.perform(get("/owners/" + ID + "/edit"))
+        mockMvc.perform(get(URL_OWNERS_EDIT))
 
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM))
-                .andExpect(model().attributeExists("owner"));
+                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
 
         verify(ownerService).findById(ID);
     }
@@ -184,12 +190,12 @@ class OwnerControllerTest {
         when(ownerService.save(any())).thenReturn(OWNER);
 
         // When
-        mockMvc.perform(post("/owners/" + ID + "/edit"))
+        mockMvc.perform(post(URL_OWNERS_EDIT))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/owners/" + ID))
-                .andExpect(model().attributeExists("owner"));
+                .andExpect(view().name(URL_REDIRECT_OWNER))
+                .andExpect(model().attributeExists(OwnerController.ATTRIBUTE_OWNER));
 
         verify(ownerService).save(any());
     }
