@@ -49,7 +49,7 @@ class OwnerControllerTest {
 
                 // Then
                 .andExpect(status().isOk())
-                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND))
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND_FORM))
                 .andExpect(model().attributeExists("owner"));
 
         verifyNoInteractions(ownerService);
@@ -95,7 +95,7 @@ class OwnerControllerTest {
         mockMvc.perform(get("/owners"))
 
                 // Then
-                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND))
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_FIND_FORM))
                 .andExpect(model().attributeExists("owner"));
 
         verify(ownerService).findAllByLastNameLike(anyString());

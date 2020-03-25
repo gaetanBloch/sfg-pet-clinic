@@ -17,7 +17,7 @@ import java.util.Set;
 @RequestMapping("/owners")
 @Controller
 final class OwnerController {
-    static final String VIEWS_OWNER_FIND = "owners/findOwners";
+    static final String VIEWS_OWNER_FIND_FORM = "owners/findOwners";
     static final String VIEWS_OWNERS_LIST = "owners/ownersList";
     static final String VIEWS_OWNER_DETAILS = "owners/ownerDetails";
     static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
@@ -32,7 +32,7 @@ final class OwnerController {
     @GetMapping("/find")
     public String findOwners(Model model) {
         model.addAttribute("owner", Owner.builder().build());
-        return VIEWS_OWNER_FIND;
+        return VIEWS_OWNER_FIND_FORM;
     }
 
     @GetMapping
@@ -48,7 +48,7 @@ final class OwnerController {
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
-            return VIEWS_OWNER_FIND;
+            return VIEWS_OWNER_FIND_FORM;
         } else if (results.size() == 1) {
             // 1 owner found
             owner = results.iterator().next();
