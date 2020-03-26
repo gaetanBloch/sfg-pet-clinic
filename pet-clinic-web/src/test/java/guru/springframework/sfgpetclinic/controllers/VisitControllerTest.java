@@ -72,7 +72,7 @@ class VisitControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(ATTRIBUTE_PET))
                 .andExpect(model().attributeExists(ATTRIBUTE_VISIT))
-                .andExpect(view().name(VIEW_VIST_CREATE_OR_UPDATE_FORM));
+                .andExpect(view().name(VIEW_VISIT_CREATE_OR_UPDATE_FORM));
 
         verify(petService).findById(ID);
     }

@@ -39,6 +39,7 @@ class PetControllerTest {
     private static final String URL_OWNERS_PETS_NEW = URL_OWNERS + "/" + ID + URL_PETS_NEW;
     private static final String URL_OWNERS_PETS_EDIT = URL_OWNERS + "/" + ID + URL_PETS + "/" + ID2 + URL_EDIT;
     private static final String URL_REDIRECT_OWNER_ID = URL_REDIRECT_OWNER + ID;
+
     MockMvc mockMvc;
     Set<PetType> petTypes;
     @Mock

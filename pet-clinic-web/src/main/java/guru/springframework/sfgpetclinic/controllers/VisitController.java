@@ -29,7 +29,7 @@ import static guru.springframework.sfgpetclinic.controllers.PetController.*;
 @Controller
 public class VisitController {
     static final String URL_VISITS = "/visits";
-    static final String VIEW_VIST_CREATE_OR_UPDATE_FORM = "pets/createOrUpdateVisitForm";
+    static final String VIEW_VISIT_CREATE_OR_UPDATE_FORM = "pets/createOrUpdateVisitForm";
     static final String ATTRIBUTE_VISIT = "visit";
 
     private final VisitService visitService;
@@ -70,7 +70,7 @@ public class VisitController {
     // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
     @GetMapping(URL_OWNERS + "/*" + URL_PETS + "/{petId}" + URL_VISITS + URL_NEW)
     public String initNewVisitForm() {
-        return VIEW_VIST_CREATE_OR_UPDATE_FORM;
+        return VIEW_VISIT_CREATE_OR_UPDATE_FORM;
     }
 
     // Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
@@ -78,7 +78,7 @@ public class VisitController {
     public String processNewVisitForm(@Valid Visit visit, BindingResult result, @PathVariable Long ownerId) {
         Owner owner = ownerService.findById(ownerId);
         if (result.hasErrors()) {
-            return VIEW_VIST_CREATE_OR_UPDATE_FORM;
+            return VIEW_VISIT_CREATE_OR_UPDATE_FORM;
         } else {
             visitService.save(visit);
             return URL_REDIRECT_OWNER + owner.getId();
