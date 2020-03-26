@@ -57,7 +57,6 @@ class PetControllerTest {
                 PetType.builder().id(ID).name("Dog").build(),
                 PetType.builder().id(ID2).name("Cat").build()
         );
-
         when(ownerService.findById(ID)).thenReturn(OWNER);
         when(petTypeService.findAll()).thenReturn(petTypes);
     }
