@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -160,7 +161,10 @@ class OwnerControllerTest {
         when(ownerService.save(any())).thenReturn(OWNER);
 
         // When
-        mockMvc.perform(post(URL_OWNERS_NEW))
+        mockMvc.perform(post(URL_OWNERS_NEW)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("firstName", "John")
+                .param("lastName", "Doe"))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
@@ -192,7 +196,10 @@ class OwnerControllerTest {
         when(ownerService.save(any())).thenReturn(OWNER);
 
         // When
-        mockMvc.perform(post(URL_OWNERS_EDIT))
+        mockMvc.perform(post(URL_OWNERS_EDIT)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("firstName", "John")
+                .param("lastName", "Doe"))
 
                 // Then
                 .andExpect(status().is3xxRedirection())

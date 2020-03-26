@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -91,7 +92,10 @@ class PetControllerTest {
         initMocksReturn();
 
         // When
-        mockMvc.perform(post(URL_OWNERS_PETS_NEW))
+        mockMvc.perform(post(URL_OWNERS_PETS_NEW)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("name", "soleil")
+                .param("birthDate", "2020-01-01"))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
@@ -126,7 +130,10 @@ class PetControllerTest {
         initMocksReturn();
 
         // When
-        mockMvc.perform(post(URL_OWNERS_PETS_EDIT))
+        mockMvc.perform(post(URL_OWNERS_PETS_EDIT)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("name", "soleil")
+                .param("birthDate", "2020-01-01"))
 
                 // Then
                 .andExpect(status().is3xxRedirection())

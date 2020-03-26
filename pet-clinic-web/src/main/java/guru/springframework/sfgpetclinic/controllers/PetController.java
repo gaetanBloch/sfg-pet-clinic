@@ -15,6 +15,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
 import java.util.Set;
 
 import static guru.springframework.sfgpetclinic.controllers.ControllerUtils.URL_EDIT;
@@ -55,6 +57,16 @@ final class PetController {
         dataBinder.setDisallowedFields("id");
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                setValue(LocalDate.parse(text));
+            }
+        });
+    }
+
     @GetMapping(URL_PETS_NEW)
     public String initCreationForm(Owner owner, Model model) {
         Pet pet = new Pet();
@@ -90,13 +102,11 @@ final class PetController {
 
     @PostMapping(URL_PET_EDIT)
     public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, Model model) {
+        pet.setOwner(owner);
         if (result.hasErrors()) {
-            pet.setOwner(owner);
             model.addAttribute(ATTRIBUTE_PET, pet);
             return VIEW_PETS_CREATE_OR_UPDATE_FORM;
         } else {
-            owner.getPets().add(pet);
-            pet.setOwner(owner);
             petService.save(pet);
             return URL_REDIRECT_OWNER + owner.getId();
         }
