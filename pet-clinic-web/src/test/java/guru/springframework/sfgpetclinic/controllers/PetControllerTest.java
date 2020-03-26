@@ -57,9 +57,7 @@ class PetControllerTest {
                 PetType.builder().id(ID).name("Dog").build(),
                 PetType.builder().id(ID2).name("Cat").build()
         );
-    }
 
-    private void initMocksReturn() {
         when(ownerService.findById(ID)).thenReturn(OWNER);
         when(petTypeService.findAll()).thenReturn(petTypes);
     }
@@ -71,9 +69,6 @@ class PetControllerTest {
 
     @Test
     void initCreationFormTest() throws Exception {
-        // Given
-        initMocksReturn();
-
         // When
         mockMvc.perform(get(URL_OWNERS_PETS_NEW))
 
@@ -88,9 +83,6 @@ class PetControllerTest {
 
     @Test
     void processCreationFormTest() throws Exception {
-        // Given
-        initMocksReturn();
-
         // When
         mockMvc.perform(post(URL_OWNERS_PETS_NEW)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -108,7 +100,6 @@ class PetControllerTest {
     @Test
     void initUpdateFormTest() throws Exception {
         // Given
-        initMocksReturn();
         when(petService.findById(ID2)).thenReturn(Pet.builder().id(ID2).build());
 
         // When
@@ -126,9 +117,6 @@ class PetControllerTest {
 
     @Test
     void processUpdateFormTest() throws Exception {
-        // Given
-        initMocksReturn();
-
         // When
         mockMvc.perform(post(URL_OWNERS_PETS_EDIT)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
