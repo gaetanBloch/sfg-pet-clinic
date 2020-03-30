@@ -9,7 +9,7 @@ import org.springframework.validation.Validator;
  * @author Gaetan Bloch
  * Created on 30/03/2020
  */
-public class PetValidator implements Validator {
+public final class PetValidator implements Validator {
     private static final String REQUIRED = "required";
 
     @Override
