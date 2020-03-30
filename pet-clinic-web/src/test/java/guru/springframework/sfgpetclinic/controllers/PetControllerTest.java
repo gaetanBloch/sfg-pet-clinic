@@ -1,6 +1,7 @@
 package guru.springframework.sfgpetclinic.controllers;
 
 import com.google.common.collect.ImmutableSet;
+import guru.springframework.sfgpetclinic.formatters.PetTypeFormatter;
 import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.model.PetType;
 import guru.springframework.sfgpetclinic.services.OwnerService;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -52,7 +54,12 @@ class PetControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(petController).build();
+        var conversionService = new DefaultFormattingConversionService();
+        conversionService.addFormatterForFieldType(PetType.class, new PetTypeFormatter(petTypeService));
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(petController)
+                .setConversionService(conversionService)
+                .build();
         petTypes = ImmutableSet.of(
                 PetType.builder().id(ID).name("Dog").build(),
                 PetType.builder().id(ID2).name("Cat").build()
@@ -61,9 +68,9 @@ class PetControllerTest {
         when(petTypeService.findAll()).thenReturn(petTypes);
     }
 
-    private void verifyMocks() {
+    private void verifyMocks(int times) {
         verify(ownerService).findById(ID);
-        verify(petTypeService).findAll();
+        verify(petTypeService, times(times)).findAll();
     }
 
     @Test
@@ -77,7 +84,7 @@ class PetControllerTest {
                 .andExpect(model().attributeExists(ATTRIBUTE_PET))
                 .andExpect(view().name(VIEW_PETS_CREATE_OR_UPDATE_FORM));
 
-        verifyMocks();
+        verifyMocks(1);
     }
 
     @Test
@@ -85,15 +92,16 @@ class PetControllerTest {
         // When
         mockMvc.perform(post(URL_OWNERS_PETS_NEW)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("name", "soleil")
-                .param("birthDate", "2020-01-01"))
+                .param("name", "Caline")
+                .param("birthDate", "2020-01-01")
+                .param("petType", "Cat"))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(URL_REDIRECT_OWNER_ID))
                 .andExpect(model().attributeExists(ATTRIBUTE_PET));
 
-        verifyMocks();
+        verifyMocks(2);
         verify(petService).save(any());
     }
 
@@ -124,7 +132,7 @@ class PetControllerTest {
                 .andExpect(model().attributeExists(ATTRIBUTE_PET))
                 .andExpect(view().name(VIEW_PETS_CREATE_OR_UPDATE_FORM));
 
-        verifyMocks();
+        verifyMocks(1);
         verify(petService).findById(ID2);
     }
 
@@ -133,15 +141,16 @@ class PetControllerTest {
         // When
         mockMvc.perform(post(URL_OWNERS_PETS_EDIT)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("name", "soleil")
-                .param("birthDate", "2020-01-01"))
+                .param("name", "Milou")
+                .param("birthDate", "2020-01-01")
+                .param("petType", "Dog"))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(URL_REDIRECT_OWNER_ID))
                 .andExpect(model().attributeExists(ATTRIBUTE_PET));
 
-        verifyMocks();
+        verifyMocks(2);
         verify(petService).save(any());
     }
 
