@@ -18,7 +18,7 @@ public class Specialty extends BaseEntity {
     @Column(name = "description")
     private String description;
     @ManyToMany(mappedBy = "specialties")
-    private Set<Vet> vets = new HashSet<>();
+    private transient Set<Vet> vets = new HashSet<>();
 
     @Builder
     public Specialty(Long id, String description, @Singular Set<Vet> vets) {
