@@ -24,8 +24,7 @@ import static guru.springframework.sfgpetclinic.controllers.OwnerController.URL_
 import static guru.springframework.sfgpetclinic.controllers.PetController.*;
 import static guru.springframework.sfgpetclinic.controllers.VisitController.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -97,5 +96,19 @@ class VisitControllerTest {
         verify(petService).findById(ID);
         verify(ownerService).findById(ID2);
         verify(visitService).save(any());
+    }
+
+    @Test
+    void processNewVisitFormValidationFailedTest() throws Exception {
+        // When
+        mockMvc.perform(post(URL_CREATE_UPDATE_VISIT).contentType(MediaType.APPLICATION_FORM_URLENCODED))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists(ATTRIBUTE_PET))
+                .andExpect(model().attributeExists(ATTRIBUTE_VISIT))
+                .andExpect(view().name(VIEW_VISIT_CREATE_OR_UPDATE_FORM));
+
+        verifyNoInteractions(visitService);
     }
 }
