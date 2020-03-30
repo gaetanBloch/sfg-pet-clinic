@@ -81,7 +81,14 @@ final class DataLoader implements CommandLineRunner {
 
         visitService.save(Visit.builder().pet(fionasPet).date(LocalDate.now()).description("Sneezy Kitty").build());
 
-        vetService.save(Vet.builder().firstName("Sam").lastName("Axe").specialty(savedRadiology).build());
-        vetService.save(Vet.builder().firstName("Jessie").lastName("Porter").specialty(savedSurgery).build());
+        vetService.save(Vet.builder()
+                .firstName("Sam")
+                .lastName("Axe")
+                .specialty(savedRadiology)
+                .specialty(savedDentistry).build());
+        vetService.save(Vet.builder()
+                .firstName("Jessie")
+                .lastName("Porter")
+                .specialty(savedSurgery).build());
     }
 }

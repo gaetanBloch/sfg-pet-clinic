@@ -1,27 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body}, 'vets')}">
+<html lang="en" th:replace="~{fragments/layout :: layout (~{::body},'vets')}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>List of Vets</title>
 </head>
 <body>
-    <h2 th:text="'List of Vets'"></h2>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="vet : ${vets}">
-            <td th:text="${vet.id}"></td>
-            <td th:text="${vet.firstName}"></td>
-            <td th:text="${vet.lastName}"></td>
-        </tr>
-        </tbody>
-    </table>
+<h2>Veterinarians</h2>
+
+<table class="table table-striped" id="vets">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Specialties</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="vet : ${vets}">
+        <td th:text="${vet.firstName + ' ' + vet.lastName}"></td>
+        <td><span th:each="specialty : ${vet.specialties}"
+                  th:text="${specialty.description + ' '}"/> <span
+                th:if="${vet?.specialties?.size() == 0}">none</span></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
