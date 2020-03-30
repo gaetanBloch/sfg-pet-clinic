@@ -42,7 +42,6 @@ class PetControllerTest {
     private static final String URL_REDIRECT_OWNER_ID = URL_REDIRECT_OWNER + ID;
 
     MockMvc mockMvc;
-    Set<PetType> petTypes;
     @Mock
     private PetService petService;
     @Mock
@@ -60,7 +59,7 @@ class PetControllerTest {
                 .standaloneSetup(petController)
                 .setConversionService(conversionService)
                 .build();
-        petTypes = ImmutableSet.of(
+        Set<PetType> petTypes = ImmutableSet.of(
                 PetType.builder().id(ID).name("Dog").build(),
                 PetType.builder().id(ID2).name("Cat").build()
         );
