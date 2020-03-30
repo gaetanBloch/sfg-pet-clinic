@@ -65,7 +65,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void processFindFormReturnMany() throws Exception {
+    void processFindFormReturnManyTest() throws Exception {
         // Given
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(owners);
 
@@ -81,7 +81,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void processFindFormReturnOne() throws Exception {
+    void processFindFormReturnOneTest() throws Exception {
         // Given
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(ImmutableSet.of(OWNER));
 
@@ -96,7 +96,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void processFindFormReturnNone() throws Exception {
+    void processFindFormReturnNoneTest() throws Exception {
         // Given
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(ImmutableSet.of());
 
@@ -111,7 +111,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void processFindFormEmptyReturnMany() throws Exception {
+    void processFindFormEmptyReturnManyTest() throws Exception {
         // Given
         when(ownerService.findAllByLastNameLike(anyString())).thenReturn(owners);
 
@@ -127,7 +127,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void displayOwner() throws Exception {
+    void displayOwnerTest() throws Exception {
         // Given
         when(ownerService.findById(ID)).thenReturn(OWNER);
 
@@ -143,7 +143,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void initCreationForm() throws Exception {
+    void initCreationFormTest() throws Exception {
         // When
         mockMvc.perform(get(URL_OWNERS_NEW))
 
@@ -156,15 +156,19 @@ class OwnerControllerTest {
     }
 
     @Test
-    void processCreationForm() throws Exception {
+    void processCreationFormTest() throws Exception {
         // Given
         when(ownerService.save(any())).thenReturn(OWNER);
 
         // When
         mockMvc.perform(post(URL_OWNERS_NEW)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("firstName", "John")
-                .param("lastName", "Doe"))
+                .param("firstName", "Gaetan")
+                .param("lastName", "Bloch")
+                .param("address", "123 Paris street")
+                .param("city", "Paris")
+                .param("telephone", "0123123123")
+        )
 
                 // Then
                 .andExpect(status().is3xxRedirection())
@@ -175,7 +179,43 @@ class OwnerControllerTest {
     }
 
     @Test
-    void initUpdateOwnerForm() throws Exception {
+    void processCreationForm() throws Exception {
+        // Given
+        when(ownerService.save(any())).thenReturn(OWNER);
+
+        // When
+        mockMvc.perform(post(URL_OWNERS_NEW)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("firstName", "Gaetan")
+                .param("lastName", "Bloch")
+                .param("address", "123 Paris street")
+                .param("city", "Paris")
+                .param("telephone", "0123123123"))
+
+                // Then
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name(URL_REDIRECT_OWNER))
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
+
+        verify(ownerService).save(any());
+    }
+
+    @Test
+    void processCreationFormValidationFailedTest() throws Exception {
+        // When
+        mockMvc.perform(post(URL_OWNERS_NEW)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(view().name(VIEW_OWNER_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
+
+        verifyNoInteractions(ownerService);
+    }
+
+    @Test
+    void initUpdateOwnerFormTest() throws Exception {
         // Given
         when(ownerService.findById(ID)).thenReturn(OWNER);
 
@@ -191,7 +231,7 @@ class OwnerControllerTest {
     }
 
     @Test
-    void processUpdateOwnerForm() throws Exception {
+    void processUpdateOwnerFormTest() throws Exception {
         // Given
         when(ownerService.save(any())).thenReturn(OWNER);
 
@@ -199,7 +239,10 @@ class OwnerControllerTest {
         mockMvc.perform(post(URL_OWNERS_EDIT)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("firstName", "John")
-                .param("lastName", "Doe"))
+                .param("lastName", "Doe")
+                .param("address", "123 Paris street")
+                .param("city", "Paris")
+                .param("telephone", "0123123123"))
 
                 // Then
                 .andExpect(status().is3xxRedirection())
@@ -207,5 +250,19 @@ class OwnerControllerTest {
                 .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
 
         verify(ownerService).save(any());
+    }
+
+    @Test
+    void processUpdateOwnerFormValidationFailedTest() throws Exception {
+        // When
+        mockMvc.perform(post(URL_OWNERS_EDIT)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(view().name(VIEW_OWNER_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_OWNER));
+
+        verifyNoInteractions(ownerService);
     }
 }

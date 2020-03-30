@@ -68,7 +68,7 @@ final class DataLoader implements CommandLineRunner {
                 .lastName("Glenanne")
                 .address("123 Brickerel")
                 .city("Miami")
-                .telephone("123123132132")
+                .telephone("1321313233")
                 .build();
         Pet fionasPet = Pet.builder()
                 .petType(savedCatPetType)
