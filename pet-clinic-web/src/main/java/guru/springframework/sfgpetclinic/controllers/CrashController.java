@@ -1,0 +1,16 @@
+package guru.springframework.sfgpetclinic.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+/**
+ * @author Gaetan Bloch
+ * Created on 30/03/2020
+ */
+@Controller
+public class CrashController {
+    @GetMapping("/oups")
+    public String triggerException() {
+        throw new RuntimeException("Expected: controller used to showcase what happens when an exception is thrown");
+    }
+}
