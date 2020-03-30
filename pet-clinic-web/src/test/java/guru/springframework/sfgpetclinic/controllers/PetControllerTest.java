@@ -24,8 +24,7 @@ import static guru.springframework.sfgpetclinic.controllers.OwnerController.ATTR
 import static guru.springframework.sfgpetclinic.controllers.OwnerController.URL_OWNERS;
 import static guru.springframework.sfgpetclinic.controllers.PetController.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -91,10 +90,24 @@ class PetControllerTest {
 
                 // Then
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(URL_REDIRECT_OWNER_ID));
+                .andExpect(view().name(URL_REDIRECT_OWNER_ID))
+                .andExpect(model().attributeExists(ATTRIBUTE_PET));
 
         verifyMocks();
         verify(petService).save(any());
+    }
+
+    @Test
+    void processCreationFormValidationFailedTest() throws Exception {
+        // When
+        mockMvc.perform(post(URL_OWNERS_PETS_NEW).contentType(MediaType.APPLICATION_FORM_URLENCODED))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(view().name(VIEW_PETS_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_PET));
+
+        verifyNoInteractions(petService);
     }
 
     @Test
@@ -125,9 +138,23 @@ class PetControllerTest {
 
                 // Then
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(URL_REDIRECT_OWNER_ID));
+                .andExpect(view().name(URL_REDIRECT_OWNER_ID))
+                .andExpect(model().attributeExists(ATTRIBUTE_PET));
 
         verifyMocks();
         verify(petService).save(any());
+    }
+
+    @Test
+    void processUpdateFormValidationFailedTest() throws Exception {
+        // When
+        mockMvc.perform(post(URL_OWNERS_PETS_EDIT).contentType(MediaType.APPLICATION_FORM_URLENCODED))
+
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(view().name(VIEW_PETS_CREATE_OR_UPDATE_FORM))
+                .andExpect(model().attributeExists(ATTRIBUTE_PET));
+
+        verifyNoInteractions(petService);
     }
 }

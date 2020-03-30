@@ -203,8 +203,7 @@ class OwnerControllerTest {
     @Test
     void processCreationFormValidationFailedTest() throws Exception {
         // When
-        mockMvc.perform(post(URL_OWNERS_NEW)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+        mockMvc.perform(post(URL_OWNERS_NEW).contentType(MediaType.APPLICATION_FORM_URLENCODED))
 
                 // Then
                 .andExpect(status().isOk())
@@ -255,8 +254,7 @@ class OwnerControllerTest {
     @Test
     void processUpdateOwnerFormValidationFailedTest() throws Exception {
         // When
-        mockMvc.perform(post(URL_OWNERS_EDIT)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+        mockMvc.perform(post(URL_OWNERS_EDIT).contentType(MediaType.APPLICATION_FORM_URLENCODED))
 
                 // Then
                 .andExpect(status().isOk())
