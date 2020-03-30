@@ -27,7 +27,7 @@ import static guru.springframework.sfgpetclinic.controllers.PetController.*;
  */
 @RequiredArgsConstructor
 @Controller
-public class VisitController {
+final class VisitController {
     static final String URL_VISITS = "/visits";
     static final String VIEW_VISIT_CREATE_OR_UPDATE_FORM = "pets/createOrUpdateVisitForm";
     static final String ATTRIBUTE_VISIT = "visit";
