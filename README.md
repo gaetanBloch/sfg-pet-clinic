@@ -3,9 +3,23 @@
 [![CircleCI](https://circleci.com/gh/gaetanBloch/sfg-pet-clinic.svg?style=svg)](https://circleci.com/gh/gaetanBloch/sfg-pet-clinic)
 [![codecov](https://codecov.io/gh/gaetanBloch/sfg-pet-clinic/branch/master/graph/badge.svg)](https://codecov.io/gh/gaetanBloch/sfg-pet-clinic)
 
-### Pet Clinic Application using Spring 5 and Spring boot 2 with Thymeleaf for rendering the UI
+This application was built using [Java 11](https://jdk.java.net/11/), [Spring 5](https://spring.io/), [Spring Boot 2](https://spring.io/projects/spring-boot), [Hibernate ORM](https://hibernate.org/), [H2 Database](https://www.h2database.com/html/main.html) with [Thymeleaf](https://www.thymeleaf.org/) for rendering the UI. It consists on the interaction with a a pet clinic, by creating owners, pets, visits etc.
 
-Application available at http://localhost:8080 when running
+**This application was deployed on Heroku, to access it, click [here](https://gbloch-pet-clinic.herokuapp.com/).**
+
+## Running Application Process on your computer
+
+1. Download the application by clicking [here](https://github.com/gaetanBloch/sfg-pet-clinic/archive/master.zip)
+2. Unzip the application
+3. Dowload and Install [Java 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+4. Set the environment variable `JAVA_HOME` to the root of your Java 11 jdk
+5. Download and Install [Maven](https://maven.apache.org/download.cgi)
+6. Open a terminal
+7. Move to the root of the application
+8. Run `mvn spring-boot:run`
+9. Navigate to http://localhost:8080 with your favourite browser
+
+## Application
 
 ### Pet Clinic Index 
 
