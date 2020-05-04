@@ -1,0 +1,1 @@
+web: java -Dfile.encoding=UTF-8 -classpath pet-clinic-web/target/pet-clinic-web-0.0.3-SNAPSHOT.jar;pet-clinic-data/target/pet-clinic-data-0.0.3-SNAPSHOT.jar;target/dependency/jaxb-api-2.3.0.jar;target/dependency/jaxb-core-2.3.0.jar;target/dependency/jaxb-impl-2.3.0.jar guru.springframework.sfgpetclinic.SfgPetClinicApplication
