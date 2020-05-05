@@ -53,7 +53,7 @@ class PetControllerTest {
 
     @BeforeEach
     void setUp() {
-        var conversionService = new DefaultFormattingConversionService();
+        DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
         conversionService.addFormatterForFieldType(PetType.class, new PetTypeFormatter(petTypeService));
         mockMvc = MockMvcBuilders
                 .standaloneSetup(petController)
